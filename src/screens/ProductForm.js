@@ -5,13 +5,15 @@ import api from '../Services/api';
 export default function ProductForm({ route, navigation }) {
   const product = route.params?.product || { name: '', price: '' };
   const [name, setName] = useState(product.name);
-  const [price, setPrice] = useState(product.price.toString());
+  const [description, setDescription] = useState(product.description);
+  const [quantity, setQuantity] = useState(product.quantity);
+  const [photoUrl, setPhotoUrl] = useState(product.photoUrl);
 
   const handleSave = async () => {
-    if (product.id) {
-      await api.put(`/products/${product.id}`, { name, price });
+    if (product._id) {
+      await api.put(`/products/${product._id}`, { name, description, quantity, photoUrl });
     } else {
-      await api.post('/products', { name, price });
+      await api.post('/products', { name, description, quantity, photoUrl });
     }
     navigation.goBack();
   };
@@ -26,10 +28,22 @@ export default function ProductForm({ route, navigation }) {
       />
       <TextInput
         style={styles.input}
-        placeholder="Preço"
-        value={price}
-        keyboardType="numeric"
-        onChangeText={setPrice}
+        placeholder="Descrição"
+        value={description}
+        onChangeText={setDescription}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Quantidade"
+        value={quantity}
+        keyboardType='numeric'
+        onChangeText={setQuantity}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="URL"
+        value={photoUrl}
+        onChangeText={setPhotoUrl}
       />
       <Button title="Salvar" onPress={handleSave} />
     </View>
